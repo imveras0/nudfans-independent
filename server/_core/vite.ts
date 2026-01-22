@@ -2,7 +2,6 @@ import express, { type Express } from "express";
 import fs from "fs";
 import { type Server } from "http";
 import { nanoid } from "nanoid";
-import path from "path";
 import { createServer as createViteServer } from "vite";
 import viteConfig from "../../vite.config";
 
@@ -22,18 +21,9 @@ export async function setupVite(app: Express, server: Server) {
 
   app.use(vite.middlewares);
   app.use("*", async (req, res, next) => {
-    const url = req.originalUrl;
-
     try {
-      // Em desenvolvimento, usamos o caminho relativo simples
-      const clientTemplate = path.resolve("client", "index.html");
-
-      let template = await fs.promises.readFile(clientTemplate, "utf-8");
-      template = template.replace(
-        `src="/src/main.tsx"`,
-        `src="/src/main.tsx?v=${nanoid()}"`
-      );
-      const page = await vite.transformIndexHtml(url, template);
+      const template = await fs.promises.readFile("./client/index.html", "utf-8");
+      const page = await vite.transformIndexHtml(req.originalUrl, template.replace(`src="/src/main.tsx"`, `src="/src/main.tsx?v=${nanoid()}"`));
       res.status(200).set({ "Content-Type": "text/html" }).end(page);
     } catch (e) {
       vite.ssrFixStacktrace(e as Error);
@@ -43,20 +33,18 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  // No Railway, o diretório de trabalho é /app
-  // O build do cliente vai para /app/dist/public
+  // No Railway, usamos caminhos de string pura para evitar que o esbuild quebre o código
   const distPath = "/app/dist/public";
+  const indexPath = "/app/dist/public/index.html";
   
-  console.log(`[Static] Attempting to serve from: ${distPath}`);
+  console.log("[Static] Serving from /app/dist/public");
 
   app.use(express.static(distPath));
 
   app.use("*", (_req, res) => {
-    const indexPath = "/app/dist/public/index.html";
     res.sendFile(indexPath, (err) => {
       if (err) {
-        console.error(`[Static] Error sending index.html: ${err.message}`);
-        res.status(404).send("Site em manutenção ou arquivos não encontrados.");
+        res.status(404).send("Arquivos do site não encontrados. Verifique o build.");
       }
     });
   });
