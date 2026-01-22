@@ -1,42 +1,70 @@
 import "dotenv/config";
-import * as db from "../server/db";
 import { users } from "../drizzle/schema";
 import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
+import bcrypt from "bcryptjs";
+import { nanoid } from "nanoid";
 
 async function main() {
   const url = process.env.DATABASE_URL;
-  if (!url) throw new Error("DATABASE_URL is missing");
+  if (!url) {
+    console.error("❌ DATABASE_URL is missing");
+    process.exit(1);
+  }
 
   console.log("Conectando ao banco de dados...");
-  const connection = await mysql.createConnection(url);
-  const d = drizzle(connection);
-
-  const email = "admin@teste.com";
-  const password = "admin123"; // Você poderá mudar depois
-
-  console.log(`Tentando criar usuário: ${email}`);
-
+  let connection;
   try {
-    // Usando a função de registro que já criamos para garantir o hash da senha
-    const user = await db.registerUser({
-      email,
-      password,
-      name: "Administrador",
-    });
+    connection = await mysql.createConnection(url);
+    const d = drizzle(connection);
 
-    // Forçar papel de admin
-    await d.update(users)
-      .set({ role: "admin" })
-      .where(db.eq(users.id, user.id));
+    const email = "admin@teste.com";
+    const password = "admin123";
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    console.log("✅ Usuário administrador criado com sucesso!");
-    console.log(`📧 Email: ${email}`);
-    console.log(`🔑 Senha: ${password}`);
+    console.log(`Verificando se o usuário já existe: ${email}`);
+    
+    // Tentar criar a tabela se não existir (fallback simples)
+    try {
+      await connection.query(`
+        CREATE TABLE IF NOT EXISTS users (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          openId VARCHAR(255) UNIQUE NOT NULL,
+          name VARCHAR(255),
+          email VARCHAR(320) UNIQUE,
+          password TEXT,
+          loginMethod VARCHAR(64),
+          role VARCHAR(64) DEFAULT 'user',
+          userType VARCHAR(64),
+          stripeCustomerId VARCHAR(255),
+          onboardingCompleted BOOLEAN DEFAULT FALSE,
+          createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+          lastSignedIn TIMESTAMP
+        )
+      `);
+    } catch (e) {
+      console.log("Aviso: Tabela users já deve existir ou erro ao criar.");
+    }
+
+    const [existing] = await connection.query("SELECT id FROM users WHERE email = ?", [email]) as any[];
+
+    if (existing && existing.length > 0) {
+      console.log("ℹ️ Usuário administrador já existe.");
+    } else {
+      console.log("Criando novo usuário administrador...");
+      await connection.query(
+        "INSERT INTO users (openId, name, email, password, loginMethod, role, onboardingCompleted) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        [nanoid(), "Administrador", email, hashedPassword, "email", "admin", true]
+      );
+      console.log("✅ Usuário administrador criado com sucesso!");
+      console.log(`📧 Email: ${email}`);
+      console.log(`🔑 Senha: ${password}`);
+    }
   } catch (error) {
-    console.error("❌ Erro ao criar usuário:", error);
+    console.error("❌ Erro crítico no script:", error);
   } finally {
-    await connection.end();
+    if (connection) await connection.end();
   }
 }
 
