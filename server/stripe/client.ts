@@ -4,10 +4,22 @@
 import Stripe from "stripe";
 import { ENV } from "../_core/env";
 
-// Initialize Stripe client
-export const stripe = new Stripe(ENV.stripeSecretKey || "", {
-  apiVersion: "2025-12-15.clover",
-});
+// Initialize Stripe client (optional)
+const stripeKey = ENV.stripeSecretKey;
+if (!stripeKey) {
+  console.warn("[Stripe] STRIPE_SECRET_KEY is not set. Payment features will be disabled.");
+}
+
+export const stripe = stripeKey 
+  ? new Stripe(stripeKey, { apiVersion: "2025-12-15.clover" as any })
+  : null as any;
+
+const ensureStripe = () => {
+  if (!stripe) {
+    throw new Error("Stripe is not configured. Please set STRIPE_SECRET_KEY.");
+  }
+  return stripe;
+};
 
 // Helper to get or create Stripe customer
 export async function getOrCreateStripeCustomer(
@@ -19,7 +31,7 @@ export async function getOrCreateStripeCustomer(
   // If customer already exists, return it
   if (existingCustomerId) {
     try {
-      const customer = await stripe.customers.retrieve(existingCustomerId);
+      const customer = await ensureStripe().customers.retrieve(existingCustomerId);
       if (!customer.deleted) {
         return existingCustomerId;
       }
@@ -29,7 +41,7 @@ export async function getOrCreateStripeCustomer(
   }
 
   // Create new customer
-  const customer = await stripe.customers.create({
+  const customer = await ensureStripe().customers.create({
     email,
     name: name || undefined,
     metadata: {
@@ -52,7 +64,7 @@ export async function createSubscriptionCheckout(params: {
   successUrl: string;
   cancelUrl: string;
 }): Promise<string> {
-  const session = await stripe.checkout.sessions.create({
+  const session = await ensureStripe().checkout.sessions.create({
     customer: params.customerId,
     mode: "subscription",
     line_items: [
@@ -99,7 +111,7 @@ export async function createPPVCheckout(params: {
   successUrl: string;
   cancelUrl: string;
 }): Promise<string> {
-  const session = await stripe.checkout.sessions.create({
+  const session = await ensureStripe().checkout.sessions.create({
     customer: params.customerId,
     mode: "payment",
     line_items: [
@@ -145,7 +157,7 @@ export async function createTipCheckout(params: {
   successUrl: string;
   cancelUrl: string;
 }): Promise<string> {
-  const session = await stripe.checkout.sessions.create({
+  const session = await ensureStripe().checkout.sessions.create({
     customer: params.customerId,
     mode: "payment",
     line_items: [
@@ -180,10 +192,10 @@ export async function createTipCheckout(params: {
 
 // Cancel a subscription
 export async function cancelSubscription(subscriptionId: string): Promise<void> {
-  await stripe.subscriptions.cancel(subscriptionId);
+  await ensureStripe().subscriptions.cancel(subscriptionId);
 }
 
 // Get subscription details
 export async function getSubscription(subscriptionId: string) {
-  return stripe.subscriptions.retrieve(subscriptionId);
+  return ensureStripe().subscriptions.retrieve(subscriptionId);
 }
