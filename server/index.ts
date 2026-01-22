@@ -7,29 +7,25 @@ if (!globalThis.crypto) {
 import express from "express";
 import { createServer } from "http";
 import path from "path";
-import { fileURLToPath } from "url";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { appRouter } from "./routers";
 import { createContext } from "./_core/context";
 import { registerOAuthRoutes } from "./_core/oauth";
 import { handleStripeWebhook } from "./stripe/webhook";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const rootDir = path.resolve(__dirname, "..");
-
 async function startServer() {
   const app = express();
   const server = createServer(app);
   
-  // Stripe webhook
+  // 1. Stripe webhook (must be before body parser)
   app.post("/api/stripe/webhook", express.raw({ type: "application/json" }), handleStripeWebhook);
   
+  // 2. Body parsers
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   
+  // 3. API Routes
   registerOAuthRoutes(app);
-  
   app.use(
     "/api/trpc",
     createExpressMiddleware({
@@ -38,18 +34,24 @@ async function startServer() {
     })
   );
 
+  // 4. Static Files & SPA Routing
+  const distPath = path.resolve(process.cwd(), "dist", "public");
+  
   if (process.env.NODE_ENV === "production") {
-    const distPath = path.resolve(process.cwd(), "dist", "public");
     console.log(`[Production] Serving static files from: ${distPath}`);
     
-    app.use(express.static(distPath));
+    // Serve static assets first
+    app.use(express.static(distPath, { index: false }));
     
-    // SPA fallback: serve index.html for any non-API route
+    // Fallback for ALL other routes to index.html (Crucial for SPA)
     app.get("*", (req, res, next) => {
+      // Skip API routes
       if (req.path.startsWith("/api/")) {
         return next();
       }
-      res.sendFile(path.join(distPath, "index.html"), (err) => {
+      
+      const indexPath = path.join(distPath, "index.html");
+      res.sendFile(indexPath, (err) => {
         if (err) {
           console.error("Error sending index.html:", err);
           res.status(404).send("Frontend build not found. Please check deployment.");
@@ -57,7 +59,6 @@ async function startServer() {
       });
     });
   } else {
-    // Dev mode logic (simplified)
     const { setupVite } = await import("./_core/vite");
     await setupVite(app, server);
   }
