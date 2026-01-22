@@ -44,7 +44,12 @@ async function main() {
     const existing = rows as any[];
 
     if (existing && existing.length > 0) {
-      console.log("ℹ️ Usuário administrador já existe.");
+      console.log("ℹ️ Usuário administrador já existe. Resetando senha para garantir acesso...");
+      await connection.query(
+        "UPDATE users SET password = ?, role = 'admin' WHERE email = ?",
+        [hashedPassword, email]
+      );
+      console.log("✅ Senha do administrador resetada com sucesso!");
     } else {
       console.log("Criando novo usuário administrador...");
       await connection.query(
@@ -52,9 +57,9 @@ async function main() {
         [nanoid(), "Administrador", email, hashedPassword, "email", "admin", true]
       );
       console.log("✅ Usuário administrador criado com sucesso!");
-      console.log(`📧 Email: ${email}`);
-      console.log(`🔑 Senha: ${password}`);
     }
+    console.log(`📧 Email: ${email}`);
+    console.log(`🔑 Senha: ${password}`);
   } catch (error) {
     console.error("❌ Erro crítico no script:", error);
   } finally {
