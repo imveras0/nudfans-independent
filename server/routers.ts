@@ -12,6 +12,7 @@ import { notifyOwner } from "./_core/notification";
 import { getOrCreateStripeCustomer, createSubscriptionCheckout, createPPVCheckout, createTipCheckout, cancelSubscription } from "./stripe/client";
 import { toCents, formatPrice } from "./stripe/products";
 import { invokeLLM } from "./_core/llm";
+import bcrypt from "bcryptjs";
 
 // Platform fee percentage (20%)
 const PLATFORM_FEE_RATE = 0.20;
@@ -53,9 +54,10 @@ export const appRouter = router({
           throw new TRPCError({ code: "CONFLICT", message: "E-mail já cadastrado" });
         }
 
+        const hashedPassword = await bcrypt.hash(input.password, 10);
         const userId = await db.createUser({
           email: input.email,
-          password: input.password, // In production, hash this!
+          password: hashedPassword,
           name: input.name,
           openId: `local_${Date.now()}`, // Keep openId for compatibility
           loginMethod: "email",
@@ -81,7 +83,12 @@ export const appRouter = router({
       }))
       .mutation(async ({ ctx, input }) => {
         const user = await db.getUserByEmail(input.email);
-        if (!user || user.password !== input.password) {
+        if (!user || !user.password) {
+          throw new TRPCError({ code: "UNAUTHORIZED", message: "E-mail ou senha incorretos" });
+        }
+
+        const isPasswordValid = await bcrypt.compare(input.password, user.password);
+        if (!isPasswordValid) {
           throw new TRPCError({ code: "UNAUTHORIZED", message: "E-mail ou senha incorretos" });
         }
 
