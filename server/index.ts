@@ -17,7 +17,7 @@ async function startServer() {
   const app = express();
   const server = createServer(app);
   
-  // 1. Stripe webhook (must be before body parser)
+  // 1. Stripe webhook
   app.post("/api/stripe/webhook", express.raw({ type: "application/json" }), handleStripeWebhook);
   
   // 2. Body parsers
@@ -36,25 +36,27 @@ async function startServer() {
 
   // 4. Static Files & SPA Routing
   const distPath = path.resolve(process.cwd(), "dist", "public");
-  
+  const indexPath = path.join(distPath, "index.html");
+
   if (process.env.NODE_ENV === "production") {
-    console.log(`[Production] Serving static files from: ${distPath}`);
+    console.log(`[Production] Serving from: ${distPath}`);
     
-    // Serve static assets first
+    // Serve static assets (js, css, images)
     app.use(express.static(distPath, { index: false }));
     
-    // Fallback for ALL other routes to index.html (Crucial for SPA)
-    app.get("*", (req, res, next) => {
-      // Skip API routes
+    // FOR ALL OTHER ROUTES: Serve index.html
+    // This MUST be the last route handler
+    app.get("*", (req, res) => {
+      // If it's an API call that reached here, it's a 404 API call
       if (req.path.startsWith("/api/")) {
-        return next();
+        return res.status(404).json({ error: "API route not found" });
       }
       
-      const indexPath = path.join(distPath, "index.html");
+      // For everything else (like /profile, /settings, etc), serve the React app
       res.sendFile(indexPath, (err) => {
         if (err) {
-          console.error("Error sending index.html:", err);
-          res.status(404).send("Frontend build not found. Please check deployment.");
+          console.error("Critical: index.html not found at", indexPath);
+          res.status(500).send("Frontend build missing. Please check Railway build logs.");
         }
       });
     });
