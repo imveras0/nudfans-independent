@@ -6,7 +6,7 @@
   "deploy": {
     "startCommand": "pnpm start",
     "restartPolicyType": "ON_FAILURE",
-    "healthcheckPath": "/api/trpc/system.health",
-    "healthcheckTimeout": 100
+    "healthcheckPath": null,
+    "healthcheckTimeout": null
   }
 }
