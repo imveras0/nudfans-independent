@@ -1,0 +1,50 @@
+{
+  "query": "SELECT * FROM conversations LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3pXGEv3f8DdYvNi.root --database 9bMgkSf8muYsh9oxhpaGxq --execute SELECT * FROM conversations LIMIT 10;",
+  "rows": [
+    {
+      "id": "1",
+      "creatorId": "7",
+      "fanId": "1",
+      "lastMessageAt": "NULL",
+      "creatorUnreadCount": "0",
+      "fanUnreadCount": "0",
+      "createdAt": "2026-01-21 15:24:06",
+      "updatedAt": "2026-01-21 15:24:06"
+    },
+    {
+      "id": "2",
+      "creatorId": "4",
+      "fanId": "1",
+      "lastMessageAt": "NULL",
+      "creatorUnreadCount": "0",
+      "fanUnreadCount": "0",
+      "createdAt": "2026-01-21 15:56:48",
+      "updatedAt": "2026-01-21 15:56:48"
+    },
+    {
+      "id": "3",
+      "creatorId": "2",
+      "fanId": "1",
+      "lastMessageAt": "NULL",
+      "creatorUnreadCount": "0",
+      "fanUnreadCount": "0",
+      "createdAt": "2026-01-21 16:27:40",
+      "updatedAt": "2026-01-21 16:27:40"
+    },
+    {
+      "id": "4",
+      "creatorId": "3",
+      "fanId": "1",
+      "lastMessageAt": "NULL",
+      "creatorUnreadCount": "0",
+      "fanUnreadCount": "0",
+      "createdAt": "2026-01-21 16:27:41",
+      "updatedAt": "2026-01-21 16:27:41"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tcreatorId\tfanId\tlastMessageAt\tcreatorUnreadCount\tfanUnreadCount\tcreatedAt\tupdatedAt\n1\t7\t1\tNULL\t0\t0\t2026-01-21 15:24:06\t2026-01-21 15:24:06\n2\t4\t1\tNULL\t0\t0\t2026-01-21 15:56:48\t2026-01-21 15:56:48\n3\t2\t1\tNULL\t0\t0\t2026-01-21 16:27:40\t2026-01-21 16:27:40\n4\t3\t1\tNULL\t0\t0\t2026-01-21 16:27:41\t2026-01-21 16:27:41\n",
+  "stderr": "",
+  "execution_time_ms": 454
+}

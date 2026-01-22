@@ -1,0 +1,58 @@
+{
+  "query": "SELECT c.*, u.name as fan_name, cp.displayName as creator_name FROM conversations c LEFT JOIN users u ON c.fanId = u.id LEFT JOIN creator_profiles cp ON c.creatorId = cp.id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3pXGEv3f8DdYvNi.root --database 9bMgkSf8muYsh9oxhpaGxq --execute SELECT c.*, u.name as fan_name, cp.displayName as creator_name FROM conversations c LEFT JOIN users u ON c.fanId = u.id LEFT JOIN creator_profiles cp ON c.creatorId = cp.id;",
+  "rows": [
+    {
+      "id": "4",
+      "creatorId": "3",
+      "fanId": "1",
+      "lastMessageAt": "NULL",
+      "creatorUnreadCount": "0",
+      "fanUnreadCount": "0",
+      "createdAt": "2026-01-21 16:27:41",
+      "updatedAt": "2026-01-21 16:27:41",
+      "fan_name": "sistemadaloteriabrasil",
+      "creator_name": "Amanda Silva"
+    },
+    {
+      "id": "3",
+      "creatorId": "2",
+      "fanId": "1",
+      "lastMessageAt": "NULL",
+      "creatorUnreadCount": "0",
+      "fanUnreadCount": "0",
+      "createdAt": "2026-01-21 16:27:40",
+      "updatedAt": "2026-01-21 16:27:40",
+      "fan_name": "sistemadaloteriabrasil",
+      "creator_name": "Bianca Santos"
+    },
+    {
+      "id": "2",
+      "creatorId": "4",
+      "fanId": "1",
+      "lastMessageAt": "NULL",
+      "creatorUnreadCount": "0",
+      "fanUnreadCount": "0",
+      "createdAt": "2026-01-21 15:56:48",
+      "updatedAt": "2026-01-21 15:56:48",
+      "fan_name": "sistemadaloteriabrasil",
+      "creator_name": "Juliana Costa"
+    },
+    {
+      "id": "1",
+      "creatorId": "7",
+      "fanId": "1",
+      "lastMessageAt": "NULL",
+      "creatorUnreadCount": "0",
+      "fanUnreadCount": "0",
+      "createdAt": "2026-01-21 15:24:06",
+      "updatedAt": "2026-01-21 15:24:06",
+      "fan_name": "sistemadaloteriabrasil",
+      "creator_name": "Carolina Mendes"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tcreatorId\tfanId\tlastMessageAt\tcreatorUnreadCount\tfanUnreadCount\tcreatedAt\tupdatedAt\tfan_name\tcreator_name\n4\t3\t1\tNULL\t0\t0\t2026-01-21 16:27:41\t2026-01-21 16:27:41\tsistemadaloteriabrasil\tAmanda Silva\n3\t2\t1\tNULL\t0\t0\t2026-01-21 16:27:40\t2026-01-21 16:27:40\tsistemadaloteriabrasil\tBianca Santos\n2\t4\t1\tNULL\t0\t0\t2026-01-21 15:56:48\t2026-01-21 15:56:48\tsistemadaloteriabrasil\tJuliana Costa\n1\t7\t1\tNULL\t0\t0\t2026-01-21 15:24:06\t2026-01-21 15:24:06\tsistemadaloteriabrasil\tCarolina Mendes\n",
+  "stderr": "",
+  "execution_time_ms": 377
+}

@@ -1,0 +1,17 @@
+{
+  "query": "SELECT u.id, u.name, u.userType, cp.id as creatorProfileId, cp.username FROM users u LEFT JOIN creator_profiles cp ON u.id = cp.userId WHERE u.id = 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3pXGEv3f8DdYvNi.root --database 9bMgkSf8muYsh9oxhpaGxq --execute SELECT u.id, u.name, u.userType, cp.id as creatorProfileId, cp.username FROM users u LEFT JOIN creator_profiles cp ON u.id = cp.userId WHERE u.id = 1;",
+  "rows": [
+    {
+      "id": "1",
+      "name": "sistemadaloteriabrasil",
+      "userType": "creator",
+      "creatorProfileId": "1",
+      "username": "testcreator"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tuserType\tcreatorProfileId\tusername\n1\tsistemadaloteriabrasil\tcreator\t1\ttestcreator\n",
+  "stderr": "",
+  "execution_time_ms": 360
+}

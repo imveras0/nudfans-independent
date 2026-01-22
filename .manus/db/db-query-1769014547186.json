@@ -1,0 +1,52 @@
+{
+  "query": "SELECT id, userId, username, displayName FROM creator_profiles;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3pXGEv3f8DdYvNi.root --database 9bMgkSf8muYsh9oxhpaGxq --execute SELECT id, userId, username, displayName FROM creator_profiles;",
+  "rows": [
+    {
+      "id": "1",
+      "userId": "1",
+      "username": "testcreator",
+      "displayName": "Safadona123"
+    },
+    {
+      "id": "2",
+      "userId": "384",
+      "username": "bianca_santos",
+      "displayName": "Bianca Santos"
+    },
+    {
+      "id": "3",
+      "userId": "385",
+      "username": "amanda_silva",
+      "displayName": "Amanda Silva"
+    },
+    {
+      "id": "4",
+      "userId": "386",
+      "username": "juliana_costa",
+      "displayName": "Juliana Costa"
+    },
+    {
+      "id": "5",
+      "userId": "387",
+      "username": "larissa_oliveira",
+      "displayName": "Larissa Oliveira"
+    },
+    {
+      "id": "6",
+      "userId": "388",
+      "username": "fernanda_lima",
+      "displayName": "Fernanda Lima"
+    },
+    {
+      "id": "7",
+      "userId": "389",
+      "username": "carolina_mendes",
+      "displayName": "Carolina Mendes"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tuserId\tusername\tdisplayName\n1\t1\ttestcreator\tSafadona123\n2\t384\tbianca_santos\tBianca Santos\n3\t385\tamanda_silva\tAmanda Silva\n4\t386\tjuliana_costa\tJuliana Costa\n5\t387\tlarissa_oliveira\tLarissa Oliveira\n6\t388\tfernanda_lima\tFernanda Lima\n7\t389\tcarolina_mendes\tCarolina Mendes\n",
+  "stderr": "",
+  "execution_time_ms": 373
+}

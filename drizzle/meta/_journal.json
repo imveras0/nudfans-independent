@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1768999167882,
+      "tag": "0000_salty_maestro",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1768999290105,
+      "tag": "0001_empty_silver_sable",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1769000355519,
+      "tag": "0002_sleepy_captain_cross",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1769005376325,
+      "tag": "0003_silent_night_nurse",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1769008802190,
+      "tag": "0004_sleepy_scourge",
+      "breakpoints": true
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "query": "SELECT u.id as userId, u.name, u.userType, cp.id as creatorProfileId, cp.username FROM users u LEFT JOIN creator_profiles cp ON u.id = cp.userId;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3pXGEv3f8DdYvNi.root --database 9bMgkSf8muYsh9oxhpaGxq --execute SELECT u.id as userId, u.name, u.userType, cp.id as creatorProfileId, cp.username FROM users u LEFT JOIN creator_profiles cp ON u.id = cp.userId;",
+  "rows": [
+    {
+      "userId": "1",
+      "name": "sistemadaloteriabrasil",
+      "userType": "creator",
+      "creatorProfileId": "1",
+      "username": "testcreator"
+    },
+    {
+      "userId": "384",
+      "name": "Bianca Santos",
+      "userType": "creator",
+      "creatorProfileId": "2",
+      "username": "bianca_santos"
+    },
+    {
+      "userId": "385",
+      "name": "Amanda Silva",
+      "userType": "creator",
+      "creatorProfileId": "3",
+      "username": "amanda_silva"
+    },
+    {
+      "userId": "386",
+      "name": "Juliana Costa",
+      "userType": "creator",
+      "creatorProfileId": "4",
+      "username": "juliana_costa"
+    },
+    {
+      "userId": "387",
+      "name": "Larissa Oliveira",
+      "userType": "creator",
+      "creatorProfileId": "5",
+      "username": "larissa_oliveira"
+    },
+    {
+      "userId": "388",
+      "name": "Fernanda Lima",
+      "userType": "creator",
+      "creatorProfileId": "6",
+      "username": "fernanda_lima"
+    },
+    {
+      "userId": "389",
+      "name": "Carolina Mendes",
+      "userType": "creator",
+      "creatorProfileId": "7",
+      "username": "carolina_mendes"
+    }
+  ],
+  "messages": [],
+  "stdout": "userId\tname\tuserType\tcreatorProfileId\tusername\n1\tsistemadaloteriabrasil\tcreator\t1\ttestcreator\n384\tBianca Santos\tcreator\t2\tbianca_santos\n385\tAmanda Silva\tcreator\t3\tamanda_silva\n386\tJuliana Costa\tcreator\t4\tjuliana_costa\n387\tLarissa Oliveira\tcreator\t5\tlarissa_oliveira\n388\tFernanda Lima\tcreator\t6\tfernanda_lima\n389\tCarolina Mendes\tcreator\t7\tcarolina_mendes\n",
+  "stderr": "",
+  "execution_time_ms": 373
+}

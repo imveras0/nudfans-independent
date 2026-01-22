@@ -1,0 +1,17 @@
+{
+  "query": "SELECT id, username, displayName, coverUrl, avatarUrl FROM creator_profiles WHERE id = 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3pXGEv3f8DdYvNi.root --database 9bMgkSf8muYsh9oxhpaGxq --execute SELECT id, username, displayName, coverUrl, avatarUrl FROM creator_profiles WHERE id = 1;",
+  "rows": [
+    {
+      "id": "1",
+      "username": "testcreator",
+      "displayName": "Safadona123",
+      "coverUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663306894758/9bMgkSf8muYsh9oxhpaGxq/covers/1769015739129-koae08gdt.jpg",
+      "avatarUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663306894758/9bMgkSf8muYsh9oxhpaGxq/avatars/1769009619572-tqger3e7c.png"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tusername\tdisplayName\tcoverUrl\tavatarUrl\n1\ttestcreator\tSafadona123\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663306894758/9bMgkSf8muYsh9oxhpaGxq/covers/1769015739129-koae08gdt.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663306894758/9bMgkSf8muYsh9oxhpaGxq/avatars/1769009619572-tqger3e7c.png\n",
+  "stderr": "",
+  "execution_time_ms": 652
+}

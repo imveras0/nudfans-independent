@@ -1,0 +1,38 @@
+{
+  "query": "SELECT c.id, c.creatorId, c.fanId, cp.displayName as creatorName, u.name as fanName FROM conversations c JOIN creator_profiles cp ON c.creatorId = cp.id JOIN users u ON c.fanId = u.id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3pXGEv3f8DdYvNi.root --database 9bMgkSf8muYsh9oxhpaGxq --execute SELECT c.id, c.creatorId, c.fanId, cp.displayName as creatorName, u.name as fanName FROM conversations c JOIN creator_profiles cp ON c.creatorId = cp.id JOIN users u ON c.fanId = u.id;",
+  "rows": [
+    {
+      "id": "1",
+      "creatorId": "7",
+      "fanId": "1",
+      "creatorName": "Carolina Mendes",
+      "fanName": "sistemadaloteriabrasil"
+    },
+    {
+      "id": "2",
+      "creatorId": "4",
+      "fanId": "1",
+      "creatorName": "Juliana Costa",
+      "fanName": "sistemadaloteriabrasil"
+    },
+    {
+      "id": "4",
+      "creatorId": "3",
+      "fanId": "1",
+      "creatorName": "Amanda Silva",
+      "fanName": "sistemadaloteriabrasil"
+    },
+    {
+      "id": "3",
+      "creatorId": "2",
+      "fanId": "1",
+      "creatorName": "Bianca Santos",
+      "fanName": "sistemadaloteriabrasil"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tcreatorId\tfanId\tcreatorName\tfanName\n1\t7\t1\tCarolina Mendes\tsistemadaloteriabrasil\n2\t4\t1\tJuliana Costa\tsistemadaloteriabrasil\n4\t3\t1\tAmanda Silva\tsistemadaloteriabrasil\n3\t2\t1\tBianca Santos\tsistemadaloteriabrasil\n",
+  "stderr": "",
+  "execution_time_ms": 362
+}

@@ -1,0 +1,1 @@
+ALTER TABLE `messages` ADD `isAI` boolean DEFAULT false NOT NULL;

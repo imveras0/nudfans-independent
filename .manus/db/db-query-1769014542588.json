@@ -1,0 +1,52 @@
+{
+  "query": "SELECT id, openId, name, userType FROM users;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3pXGEv3f8DdYvNi.root --database 9bMgkSf8muYsh9oxhpaGxq --execute SELECT id, openId, name, userType FROM users;",
+  "rows": [
+    {
+      "id": "1",
+      "openId": "CUZ6QJmCjEArWKFSZ7TxUn",
+      "name": "sistemadaloteriabrasil",
+      "userType": "creator"
+    },
+    {
+      "id": "384",
+      "openId": "demo_model_bianca_santos",
+      "name": "Bianca Santos",
+      "userType": "creator"
+    },
+    {
+      "id": "385",
+      "openId": "demo_model_amanda_silva",
+      "name": "Amanda Silva",
+      "userType": "creator"
+    },
+    {
+      "id": "386",
+      "openId": "demo_model_juliana_costa",
+      "name": "Juliana Costa",
+      "userType": "creator"
+    },
+    {
+      "id": "387",
+      "openId": "demo_model_larissa_oliveira",
+      "name": "Larissa Oliveira",
+      "userType": "creator"
+    },
+    {
+      "id": "388",
+      "openId": "demo_model_fernanda_lima",
+      "name": "Fernanda Lima",
+      "userType": "creator"
+    },
+    {
+      "id": "389",
+      "openId": "demo_model_carolina_mendes",
+      "name": "Carolina Mendes",
+      "userType": "creator"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\topenId\tname\tuserType\n1\tCUZ6QJmCjEArWKFSZ7TxUn\tsistemadaloteriabrasil\tcreator\n384\tdemo_model_bianca_santos\tBianca Santos\tcreator\n385\tdemo_model_amanda_silva\tAmanda Silva\tcreator\n386\tdemo_model_juliana_costa\tJuliana Costa\tcreator\n387\tdemo_model_larissa_oliveira\tLarissa Oliveira\tcreator\n388\tdemo_model_fernanda_lima\tFernanda Lima\tcreator\n389\tdemo_model_carolina_mendes\tCarolina Mendes\tcreator\n",
+  "stderr": "",
+  "execution_time_ms": 370
+}
