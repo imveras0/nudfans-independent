@@ -1,6 +1,4 @@
 import "dotenv/config";
-import { users } from "../drizzle/schema";
-import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
 import bcrypt from "bcryptjs";
 import { nanoid } from "nanoid";
@@ -16,7 +14,6 @@ async function main() {
   let connection;
   try {
     connection = await mysql.createConnection(url);
-    const d = drizzle(connection);
 
     const email = "admin@teste.com";
     const password = "admin123";
@@ -24,30 +21,27 @@ async function main() {
 
     console.log(`Verificando se o usuário já existe: ${email}`);
     
-    // Tentar criar a tabela se não existir (fallback simples)
-    try {
-      await connection.query(`
-        CREATE TABLE IF NOT EXISTS users (
-          id INT AUTO_INCREMENT PRIMARY KEY,
-          openId VARCHAR(255) UNIQUE NOT NULL,
-          name VARCHAR(255),
-          email VARCHAR(320) UNIQUE,
-          password TEXT,
-          loginMethod VARCHAR(64),
-          role VARCHAR(64) DEFAULT 'user',
-          userType VARCHAR(64),
-          stripeCustomerId VARCHAR(255),
-          onboardingCompleted BOOLEAN DEFAULT FALSE,
-          createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-          updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-          lastSignedIn TIMESTAMP
-        )
-      `);
-    } catch (e) {
-      console.log("Aviso: Tabela users já deve existir ou erro ao criar.");
-    }
+    // Garantir que a tabela users existe com a estrutura correta
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        openId VARCHAR(255) UNIQUE NOT NULL,
+        name VARCHAR(255),
+        email VARCHAR(320) UNIQUE,
+        password TEXT,
+        loginMethod VARCHAR(64),
+        role VARCHAR(64) DEFAULT 'user',
+        userType VARCHAR(64),
+        stripeCustomerId VARCHAR(255),
+        onboardingCompleted BOOLEAN DEFAULT FALSE,
+        createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        lastSignedIn TIMESTAMP
+      )
+    `);
 
-    const [existing] = await connection.query("SELECT id FROM users WHERE email = ?", [email]) as any[];
+    const [rows] = await connection.query("SELECT id FROM users WHERE email = ?", [email]);
+    const existing = rows as any[];
 
     if (existing && existing.length > 0) {
       console.log("ℹ️ Usuário administrador já existe.");
