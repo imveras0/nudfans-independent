@@ -39,13 +39,22 @@ async function startServer() {
   );
 
   if (process.env.NODE_ENV === "production") {
-    const distPath = path.join(rootDir, "dist", "public");
+    const distPath = path.resolve(process.cwd(), "dist", "public");
     console.log(`[Production] Serving static files from: ${distPath}`);
     
     app.use(express.static(distPath));
-    app.get("*", (req, res) => {
-      if (req.path.startsWith("/api/")) return;
-      res.sendFile(path.join(distPath, "index.html"));
+    
+    // SPA fallback: serve index.html for any non-API route
+    app.get("*", (req, res, next) => {
+      if (req.path.startsWith("/api/")) {
+        return next();
+      }
+      res.sendFile(path.join(distPath, "index.html"), (err) => {
+        if (err) {
+          console.error("Error sending index.html:", err);
+          res.status(404).send("Frontend build not found. Please check deployment.");
+        }
+      });
     });
   } else {
     // Dev mode logic (simplified)
